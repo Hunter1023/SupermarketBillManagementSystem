@@ -14,4 +14,9 @@
         <!-- 任何请求，都会经过这个过滤器 -->
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!-- 设置欢迎页面 -->
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
