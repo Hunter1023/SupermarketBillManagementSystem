@@ -42,5 +42,12 @@
       <artifactId>jakarta.servlet.jsp.jstl</artifactId>
       <version>3.0.1</version>
     </dependency>
+
+    <!-- 单元测试依赖，junit 5 断言使用Assertions 替代 Assert -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.9.1</version>
+    </dependency>
   </dependencies>
 </project>
