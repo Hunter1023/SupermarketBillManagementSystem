@@ -8,6 +8,7 @@
 
    ![image-20221215000502204](https://s2.loli.net/2022/12/15/ntjhl4PGEVbQekr.png)
 
+---
 # 创建数据库和数据库表
 
 1. 创建数据库
@@ -22,6 +23,14 @@
    ![image-20221215011650919](https://s2.loli.net/2022/12/15/T9pcBvNru7mVhE6.png)
 
    ![image-20221215011612523](https://s2.loli.net/2022/12/15/lUeyiIaquDckMYX.png)
+
+---
+# 静态资源
+
+1. `src/main/webapp/calendar`
+2. `src/main/webapp/css`
+3. `src/main/webapp/images`
+4. `src/main/webapp/js`
    
    
    
