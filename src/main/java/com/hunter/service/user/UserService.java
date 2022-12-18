@@ -2,6 +2,8 @@ package com.hunter.service.user;
 
 import com.hunter.pojo.User;
 
+import java.util.List;
+
 public interface UserService {
     /**
      * 用户登录
@@ -29,4 +31,15 @@ public interface UserService {
      * @return 用户总数
      */
     int getUserCount(String userName, int userRole);
+
+    /**
+     * 通过条件 查询用户列表
+     *
+     * @param userName 用户名
+     * @param userRole 用户角色
+     * @param currentPageNum 当前页数
+     * @param pageSize 页面大小
+     * @return 用户列表
+     */
+    List<User> getUserList(String userName, int userRole, int currentPageNum, int pageSize);
 }

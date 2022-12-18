@@ -7,6 +7,7 @@ import com.hunter.pojo.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserServiceImpl implements UserService {
     // 业务层都得调用dao层，所以要引入dao层
@@ -63,5 +64,21 @@ public class UserServiceImpl implements UserService {
             BaseDao.closeResource(connection, null, null);
         }
         return userCount;
+    }
+
+    @Override
+    public List<User> getUserList(String userName, int userRole, int currentPageNum, int pageSize) {
+        Connection connection = null;
+        List<User> userList = null;
+
+        try {
+            connection = BaseDao.getConnection();
+            userList = userDao.getUserList(connection, userName, userRole, currentPageNum, pageSize);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return userList;
     }
 }

@@ -4,6 +4,7 @@ import com.hunter.pojo.User;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface UserDao {
     /**
@@ -38,4 +39,17 @@ public interface UserDao {
      * @throws SQLException SQLException
      */
     int getUserCount(Connection connection, String userName, int userRole) throws SQLException;
+
+    /**
+     * 通过条件 查询用户列表
+     *
+     * @param connection     与数据库的连接
+     * @param userName       用户名
+     * @param userRole       用户角色
+     * @param currentPageNum 当前页数
+     * @param pageSize       页面大小
+     * @return 用户列表
+     * @throws SQLException SQLException
+     */
+    List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNum, int pageSize) throws SQLException;
 }

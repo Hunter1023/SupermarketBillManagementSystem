@@ -77,6 +77,41 @@ public class UserDaoImpl implements UserDao {
         return count;
     }
 
+    @Override
+    public List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNum, int pageSize) throws SQLException {
+        ResultSet rs = null;
+        User user = null;
+        List<User> userList = new ArrayList<>();
+
+        if (connection != null) {
+            StringBuffer sql = new StringBuffer();
+            sql.append("SELECT a.*, b.roleName AS userRoleName FROM smbms_user a INNER JOIN smbms_role b ON a.userRole = b.id");
+            List<Object> list = addExtraQueryStr(userName, userRole, sql);
+
+            sql.append(" ORDER BY creationDate DESC LIMIT ? OFFSET ?");
+            list.add(pageSize);
+            int currentStartNum = (currentPageNum - 1) * pageSize;
+            list.add(currentStartNum);
+
+            Object[] params = list.toArray();
+            rs = BaseDao.executeQuery(connection, sql.toString(), params);
+            while (rs.next()) {
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserName(rs.getString("userName"));
+                user.setGender(rs.getInt("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setUserRole(rs.getInt("userRole"));
+                user.setUserRoleName(rs.getString("userRoleName"));
+                userList.add(user);
+            }
+            BaseDao.closeResource(null, null, rs);
+        }
+        return userList;
+    }
+
     private List<Object> addExtraQueryStr(String userName, int userRole, StringBuffer sql) {
         List<Object> list = new ArrayList<>();
 
