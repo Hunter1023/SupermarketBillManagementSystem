@@ -2,10 +2,13 @@ package com.hunter.dao.user;
 
 import com.hunter.dao.BaseDao;
 import com.hunter.pojo.User;
+import com.mysql.cj.util.StringUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDaoImpl implements UserDao {
     @Override
@@ -49,5 +52,49 @@ public class UserDaoImpl implements UserDao {
             affectRowsCnt = BaseDao.executeUpdate(connection, sql, params);
         }
         return affectRowsCnt;
+    }
+
+    @Override
+    public int getUserCount(Connection connection, String userName, int userRole) throws SQLException {
+        ResultSet rs = null;
+        int count = 0;
+
+        if (connection != null) {
+            StringBuffer sql = new StringBuffer();
+            sql.append("SELECT count(*) AS count FROM smbms_user a INNER JOIN smbms_role b ON a.userRole = b.id");
+            // 存放参数
+            List<Object> list = addExtraQueryStr(userName, userRole, sql);
+
+            Object[] params = list.toArray();
+            rs = BaseDao.executeQuery(connection, String.valueOf(sql), params);
+
+            if (rs.next()) {
+                // 从结果集中获取数量
+                count = rs.getInt("count");
+            }
+            BaseDao.closeResource(null, null, rs);
+        }
+        return count;
+    }
+
+    private List<Object> addExtraQueryStr(String userName, int userRole, StringBuffer sql) {
+        List<Object> list = new ArrayList<>();
+
+        boolean hasWhere = false;
+        if (!StringUtils.isNullOrEmpty(userName)) {
+            sql.append(" WHERE a.userName LIKE ?");
+            list.add("%" + userName + "%"); // 模糊查询
+            hasWhere = true;
+        }
+        if (userRole > 0) {
+            if (hasWhere) {
+                sql.append(" AND");
+            } else {
+                sql.append(" WHERE");
+            }
+            sql.append(" a.userRole = ?");
+            list.add(userRole);
+        }
+        return list;
     }
 }

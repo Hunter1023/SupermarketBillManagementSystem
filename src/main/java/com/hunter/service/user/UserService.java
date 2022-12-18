@@ -20,4 +20,13 @@ public interface UserService {
      * @return 是否修改成功
      */
     boolean updatePwd(int id, String password);
+
+    /**
+     * 根据用户名或角色，查询用户总数
+     *
+     * @param userName 用户名
+     * @param userRole 角色
+     * @return 用户总数
+     */
+    int getUserCount(String userName, int userRole);
 }

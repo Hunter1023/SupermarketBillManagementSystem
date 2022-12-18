@@ -27,4 +27,15 @@ public interface UserDao {
      * @throws SQLException SQLException
      */
     int updatePwd(Connection connection, int id, String password) throws SQLException;
+
+    /**
+     * 根据用户名或角色，查询用户总数
+     *
+     * @param connection 与数据库的连接
+     * @param userName   用户名
+     * @param userRole   用户角色
+     * @return 用户总数
+     * @throws SQLException SQLException
+     */
+    int getUserCount(Connection connection, String userName, int userRole) throws SQLException;
 }
