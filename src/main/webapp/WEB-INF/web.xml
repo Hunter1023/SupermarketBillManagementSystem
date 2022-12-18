@@ -15,12 +15,22 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!-- 用户登录过滤器 -->
+    <filter>
+        <filter-name>SysFilter</filter-name>
+        <filter-class>com.hunter.filter.SysFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SysFilter</filter-name>
+        <url-pattern>/jsp/*</url-pattern>
+    </filter-mapping>
+
     <!-- 设置欢迎页面 -->
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Servlet -->
+    <!-- login Servlet -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>com.hunter.servlet.user.LoginServlet</servlet-class>
@@ -29,7 +39,7 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login.do</url-pattern>
     </servlet-mapping>
-
+    <!-- logout Servlet -->
     <servlet>
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>com.hunter.servlet.user.LogoutServlet</servlet-class>
