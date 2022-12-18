@@ -11,4 +11,13 @@ public interface UserService {
      * @return User
      */
     User login(String userCode, String password);
+
+    /**
+     * 根据用户ID修改密码
+     *
+     * @param id id
+     * @param password password
+     * @return 是否修改成功
+     */
+    boolean updatePwd(int id, String password);
 }

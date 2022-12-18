@@ -6,7 +6,7 @@ var saveBtn = null;
 $(function () {
     oldPassword = $("#oldPassword");
     newPassword = $("#newPassword");
-    renewPassword = $("#reNewPassword");
+    renewPassword = $("#renewPassword");
     saveBtn = $("#save");
 
     oldPassword.next().html("*");

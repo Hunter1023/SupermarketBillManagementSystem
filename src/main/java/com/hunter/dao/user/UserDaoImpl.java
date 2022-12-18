@@ -38,4 +38,16 @@ public class UserDaoImpl implements UserDao {
         }
         return user;
     }
+
+    @Override
+    public int updatePwd(Connection connection, int id, String password) throws SQLException {
+        int affectRowsCnt = 0;
+
+        if (connection != null) {
+            String sql = "UPDATE smbms_user SET userPassword = ? where id = ?";
+            Object[] params = {password, id};
+            affectRowsCnt = BaseDao.executeUpdate(connection, sql, params);
+        }
+        return affectRowsCnt;
+    }
 }
