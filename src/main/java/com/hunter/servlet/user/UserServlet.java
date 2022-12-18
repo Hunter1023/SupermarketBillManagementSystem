@@ -1,10 +1,14 @@
 package com.hunter.servlet.user;
 
 import com.alibaba.fastjson2.JSONArray;
+import com.hunter.pojo.Role;
 import com.hunter.pojo.User;
+import com.hunter.service.role.RoleService;
+import com.hunter.service.role.RoleServiceImpl;
 import com.hunter.service.user.UserService;
 import com.hunter.service.user.UserServiceImpl;
 import com.hunter.util.Constants;
+import com.hunter.util.PageSupport;
 import com.mysql.cj.util.StringUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -14,6 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,7 +33,68 @@ public class UserServlet extends HttpServlet {
                 updatePwd(req, resp);
             } else if (method.equals("verifyOldPwd")) {
                 verifyOldPwd(req, resp);
+            } else if (method.equals("query")) {
+                query(req, resp);
             }
+        }
+    }
+
+    private void query(HttpServletRequest req, HttpServletResponse resp) {
+        // 从前端获取数据
+        String queryUserName = req.getParameter("queryName");
+        String queryUserRole = req.getParameter("queryUserRole");
+        String pageIndex = req.getParameter("pageIndex");
+
+        // 默认角色为0
+        int userRole = Constants.DEFAULT_USER_ROLE;
+        int pageSize = Constants.DEFAULT_PAGE_SIZE;
+        int currentPageNum = Constants.DEFAULT_PAGE_NUM;
+
+        if (queryUserName == null) {
+            queryUserName = "";
+        }
+        if (!StringUtils.isNullOrEmpty(queryUserRole)) {
+            userRole = Integer.parseInt(queryUserRole);
+        }
+        if (!StringUtils.isNullOrEmpty(pageIndex)) {
+            currentPageNum = Integer.parseInt(pageIndex);
+        }
+
+        UserService userService = new UserServiceImpl();
+        // 用户总数
+        int totalCount = userService.getUserCount(queryUserName, userRole);
+
+        PageSupport pageSupport = new PageSupport();
+        pageSupport.setCurrentPageNum(currentPageNum);
+        pageSupport.setPageSize(pageSize);
+        pageSupport.setTotalCount(totalCount);
+
+        int totalPageCount = pageSupport.getTotalPageCount();
+        // 控制首页和尾页
+        if (totalPageCount < 1) {
+            currentPageNum = 1;
+        } else if (currentPageNum > totalPageCount) {
+            currentPageNum = totalPageCount;
+        }
+
+        // 获取用户列表展示
+        List<User> userList = userService.getUserList(queryUserName, userRole, currentPageNum, pageSize);
+
+        RoleService roleService = new RoleServiceImpl();
+        List<Role> roleList = roleService.getRoleList();
+
+        req.setAttribute("userList", userList);
+        req.setAttribute("roleList", roleList);
+        req.setAttribute("totalCount", totalCount);
+        req.setAttribute("currentPageNum", currentPageNum);
+        req.setAttribute("totalPageCount", totalPageCount);
+        req.setAttribute("queryUserName", queryUserName);
+        req.setAttribute("queryUserRole", queryUserRole);
+
+        try {
+            req.getRequestDispatcher("userlist.jsp").forward(req, resp);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
         }
     }
 
