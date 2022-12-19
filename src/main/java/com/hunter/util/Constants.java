@@ -1,11 +1,13 @@
 package com.hunter.util;
 
 public class Constants {
-    public final static String USER_SESSION = "userSession";
+    public static final String USER_SESSION = "userSession";
 
-    public final static String MESSAGE = "message";
+    public static final String MESSAGE = "message";
 
     public static final String RESULT = "result";
+
+    public static final String USER_CODE = "userCode";
 
     public static final int ADMIN_ROLE = 1;
 

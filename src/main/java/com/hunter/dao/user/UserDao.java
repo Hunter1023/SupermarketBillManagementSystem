@@ -52,4 +52,24 @@ public interface UserDao {
      * @throws SQLException SQLException
      */
     List<User> getUserList(Connection connection, String userName, int userRole, int currentPageNum, int pageSize) throws SQLException;
+
+    /**
+     * 添加用户
+     *
+     * @param connection 与数据库的连接
+     * @param user       用户
+     * @return 添加的用户数
+     * @throws SQLException SQLException
+     */
+    int addUser(Connection connection, User user) throws SQLException;
+
+    /**
+     * 根据用户编码，获取用户id
+     *
+     * @param connection 与数据库的连接
+     * @param userCode   用户编码
+     * @return 用户id
+     * @throws SQLException SQLException
+     */
+    long getUserId(Connection connection, String userCode) throws SQLException;
 }

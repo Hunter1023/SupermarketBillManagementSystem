@@ -81,4 +81,51 @@ public class UserServiceImpl implements UserService {
         }
         return userList;
     }
+
+    @Override
+    public boolean addUser(User user) {
+        Connection connection = null;
+        boolean isSucceed = false;
+        try {
+            connection = BaseDao.getConnection();
+            // 开启事务
+            connection.setAutoCommit(false);
+            int updateRows = userDao.addUser(connection, user);
+            connection.commit();
+            if (updateRows > 0) {
+                isSucceed = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return isSucceed;
+    }
+
+    @Override
+    public boolean isUserCodeExist(String userCode) {
+        Connection connection = null;
+        boolean isUserCodeExist = false;
+
+        long userId = 0;
+        try {
+            connection = BaseDao.getConnection();
+            userId = userDao.getUserId(connection, userCode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+
+        if (userId > 0) {
+            isUserCodeExist = true;
+        }
+        return isUserCodeExist;
+    }
 }

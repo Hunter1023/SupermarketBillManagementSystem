@@ -132,4 +132,39 @@ public class UserDaoImpl implements UserDao {
         }
         return list;
     }
+
+    @Override
+    public int addUser(Connection connection, User user) throws SQLException {
+        int addUserCnt = 0;
+
+        if (connection != null) {
+            String sql = "INSERT INTO smbms_user(id, userCode, userName, userPassword, " +
+                    "gender, birthday, phone, address, userRole) VALUES(NULL, ?, ?, ?, ?, ?, ?, ?, ?)";
+            Object[] params = {user.getUserCode(), user.getUserName(), user.getUserPassword(),
+                    user.getGender(), user.getBirthday(), user.getPhone(), user.getAddress(), user.getUserRole()};
+            addUserCnt = BaseDao.executeUpdate(connection, sql, params);
+        }
+        return addUserCnt;
+    }
+
+    @Override
+    public long getUserId(Connection connection, String userCode) throws SQLException {
+        ResultSet rs = null;
+        long userId = 0;
+
+        if (connection != null) {
+            StringBuffer sql = new StringBuffer();
+            sql.append("SELECT id FROM smbms_user WHERE userCode = ?");
+            Object[] params = {userCode};
+
+            rs = BaseDao.executeQuery(connection, String.valueOf(sql), params);
+
+            if (rs.next()) {
+                // 从结果集中获取用户id
+                userId = rs.getLong("id");
+            }
+            BaseDao.closeResource(null, null, rs);
+        }
+        return userId;
+    }
 }

@@ -42,4 +42,20 @@ public interface UserService {
      * @return 用户列表
      */
     List<User> getUserList(String userName, int userRole, int currentPageNum, int pageSize);
+
+    /**
+     * 添加用户
+     *
+     * @param user 用户
+     * @return 是否添加成功
+     */
+    boolean addUser(User user);
+
+    /**
+     * 查询用户编码是否已存在
+     *
+     * @param userCode 用户编码
+     * @return 用户编码是否已存在
+     */
+    boolean isUserCodeExist(String userCode);
 }

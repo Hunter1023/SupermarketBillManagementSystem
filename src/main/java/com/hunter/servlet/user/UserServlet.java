@@ -17,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +38,98 @@ public class UserServlet extends HttpServlet {
                 verifyOldPwd(req, resp);
             } else if (method.equals("query")) {
                 query(req, resp);
+            } else if (method.equals("add")) {
+                addUser(req, resp);
+            } else if (method.equals("getRoleList")) {
+                getRoleList(req, resp);
+            } else if (method.equals("userCodeExist")) {
+                checkUserCodeExist(req, resp);
             }
         }
+    }
+
+    private void checkUserCodeExist(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String userCode = req.getParameter("userCode");
+
+        UserService userService = new UserServiceImpl();
+        boolean isUserCodeExist = userService.isUserCodeExist(userCode);
+
+        Map<String, String> resultMap = new HashMap<>();
+        if (isUserCodeExist) {
+            resultMap.put(Constants.USER_CODE, "exist");
+        } else {
+            resultMap.put(Constants.USER_CODE, "notExist");
+        }
+
+        resp.setContentType("application/json");
+        PrintWriter writer = resp.getWriter();
+        // JSONArray fastjson的工具类，用于转换格式
+        writer.write(JSONArray.toJSONString(resultMap));
+        writer.flush();
+        writer.close();
+    }
+
+    private void getRoleList(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        RoleService roleService = new RoleServiceImpl();
+        List<Role> roleList = roleService.getRoleList();
+
+        resp.setContentType("application/json");
+        PrintWriter writer = resp.getWriter();
+        // JSONArray fastjson的工具类，用于转换格式
+        writer.write(JSONArray.toJSONString(roleList));
+        writer.flush();
+        writer.close();
+    }
+
+    private void addUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        boolean isSucceed = true;
+        String userCode = null;
+        String userName = null;
+        String userPassword = null;
+        Integer gender = null;
+        Date birthday = null;
+        String phone = null;
+        String address = null;
+        Integer userRole = null;
+        try {
+            userCode = req.getParameter("userCode");
+            userName = req.getParameter("userName");
+            userPassword = req.getParameter("userPassword");
+
+            gender = Integer.parseInt(req.getParameter("gender"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            birthday = dateFormat.parse(req.getParameter("birthday"));
+
+            phone = req.getParameter("phone");
+            address = req.getParameter("address");
+
+            userRole = Integer.parseInt(req.getParameter("userRole"));
+        } catch (ParseException e) {
+            isSucceed = false;
+            e.printStackTrace();
+        }
+        if (isSucceed) {
+            User user = new User();
+            user.setUserCode(userCode);
+            user.setUserCode(userName);
+            user.setUserPassword(userPassword);
+            user.setGender(gender);
+            user.setBirthday(birthday);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setUserRole(userRole);
+
+            UserService userService = new UserServiceImpl();
+            isSucceed = userService.addUser(user);
+        }
+
+        if (isSucceed) {
+            req.setAttribute(Constants.MESSAGE, "添加新用户成功");
+        } else {
+            req.setAttribute(Constants.MESSAGE, "添加新用户失败");
+        }
+        req.getRequestDispatcher("userlist.jsp").forward(req, resp);
     }
 
     private void query(HttpServletRequest req, HttpServletResponse resp) {
