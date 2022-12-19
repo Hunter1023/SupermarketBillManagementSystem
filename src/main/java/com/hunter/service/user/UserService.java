@@ -58,4 +58,12 @@ public interface UserService {
      * @return 用户编码是否已存在
      */
     boolean isUserCodeExist(String userCode);
+
+    /**
+     * 通过用户编码 查询用户
+     *
+     * @param userCode 用户编码
+     * @return 用户
+     */
+    User getUser(String userCode);
 }

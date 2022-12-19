@@ -128,4 +128,20 @@ public class UserServiceImpl implements UserService {
         }
         return isUserCodeExist;
     }
+
+    @Override
+    public User getUser(String userCode) {
+        Connection connection = null;
+        User user = null;
+
+        try {
+            connection = BaseDao.getConnection();
+            user = userDao.getUser(connection, userCode);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return user;
+    }
 }

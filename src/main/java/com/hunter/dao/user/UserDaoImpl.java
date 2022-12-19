@@ -153,8 +153,7 @@ public class UserDaoImpl implements UserDao {
         long userId = 0;
 
         if (connection != null) {
-            StringBuffer sql = new StringBuffer();
-            sql.append("SELECT id FROM smbms_user WHERE userCode = ?");
+            String sql = "SELECT id FROM smbms_user WHERE userCode = ?";
             Object[] params = {userCode};
 
             rs = BaseDao.executeQuery(connection, String.valueOf(sql), params);
@@ -166,5 +165,31 @@ public class UserDaoImpl implements UserDao {
             BaseDao.closeResource(null, null, rs);
         }
         return userId;
+    }
+
+    @Override
+    public User getUser(Connection connection, String userCode) throws SQLException {
+        ResultSet rs = null;
+        User user = null;
+
+        if (connection != null) {
+            String sql = "SELECT a.*, b.roleName AS userRoleName FROM smbms_user a INNER JOIN smbms_role b ON a.userRole = b.id WHERE userCode = ?";
+            Object[] params = {userCode};
+
+            rs = BaseDao.executeQuery(connection, String.valueOf(sql), params);
+
+            if (rs.next()) {
+                user = new User();
+                user.setUserCode(rs.getString("userCode"));
+                user.setUserName(rs.getString("userName"));
+                user.setGender(rs.getInt("gender"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setUserRoleName(rs.getString("userRoleName"));
+            }
+            BaseDao.closeResource(null, null, rs);
+        }
+        return user;
     }
 }

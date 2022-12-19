@@ -72,4 +72,14 @@ public interface UserDao {
      * @throws SQLException SQLException
      */
     long getUserId(Connection connection, String userCode) throws SQLException;
+
+    /**
+     * 根据用户编码，获取用户
+     *
+     * @param connection 与数据库的连接
+     * @param userCode   用户编码
+     * @return 用户
+     * @throws SQLException SQLException
+     */
+    User getUser(Connection connection, String userCode) throws SQLException;
 }

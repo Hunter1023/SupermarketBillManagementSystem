@@ -44,8 +44,23 @@ public class UserServlet extends HttpServlet {
                 getRoleList(req, resp);
             } else if (method.equals("userCodeExist")) {
                 checkUserCodeExist(req, resp);
+            } else if (method.equals("view")) {
+                viewUser(req, resp);
             }
         }
+    }
+
+    private void viewUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 从前端获取数据
+        String userCode = req.getParameter("userCode");
+
+        UserService userService = new UserServiceImpl();
+        // 用户总数
+        User user = userService.getUser(userCode);
+
+        req.setAttribute("user", user);
+
+        req.getRequestDispatcher("userview.jsp").forward(req, resp);
     }
 
     private void checkUserCodeExist(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -112,7 +127,7 @@ public class UserServlet extends HttpServlet {
         if (isSucceed) {
             User user = new User();
             user.setUserCode(userCode);
-            user.setUserCode(userName);
+            user.setUserName(userName);
             user.setUserPassword(userPassword);
             user.setGender(gender);
             user.setBirthday(birthday);
@@ -129,7 +144,8 @@ public class UserServlet extends HttpServlet {
         } else {
             req.setAttribute(Constants.MESSAGE, "添加新用户失败");
         }
-        req.getRequestDispatcher("userlist.jsp").forward(req, resp);
+
+        resp.sendRedirect(req.getContextPath() + "/jsp/user.do?method=query&queryName=&pageIndex=1");
     }
 
     private void query(HttpServletRequest req, HttpServletResponse resp) {
