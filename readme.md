@@ -1,3 +1,8 @@
+# 狂神说JavaWeb入门项目超市订单管理系统
+
+[javaweb-30：smbms项目搭建](https://www.bilibili.com/video/BV12J411M7Sj?p=30&vd_source=57fda78848ab74e6ce22d5ab4390e7ea)
+
+---
 # 配置Tomcat
 
 1. 右上角`Edit Confgurations...` - `Add New Configuration` - `Tomcat Server` - `Local`
@@ -10,9 +15,6 @@
 3. `Deployment` - `Application context:`，填写`/smbms`
    
    ![image-20221218182255923](https://s2.loli.net/2022/12/18/I6HRpgT7oGWCZuz.png)
-4. Server - `On 'Update' action:`和`On frame deactivation:`都选择`Update classes and resources`
-
-   ![image-20221218180706726](https://s2.loli.net/2022/12/18/YX6D1j3HFZe4zNa.png)
 
 ---
 # 创建数据库和数据库表
@@ -37,6 +39,7 @@
 2. `src/main/webapp/css`
 3. `src/main/webapp/images`
 4. `src/main/webapp/js`
+5. `src/main/webapp/jsp`
    
    
    
