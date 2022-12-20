@@ -46,8 +46,23 @@ public class UserServlet extends HttpServlet {
                 checkUserCodeExist(req, resp);
             } else if (method.equals("view")) {
                 viewUser(req, resp);
+            } else if (method.equals("modify")) {
+                modifyUser(req, resp);
             }
         }
+    }
+
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 从前端获取数据
+        String userCode = req.getParameter("userCode");
+
+        UserService userService = new UserServiceImpl();
+
+        User user = userService.getUser(userCode);
+
+        req.setAttribute("user", user);
+
+        req.getRequestDispatcher("usermodify.jsp").forward(req, resp);
     }
 
     private void viewUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,7 +70,7 @@ public class UserServlet extends HttpServlet {
         String userCode = req.getParameter("userCode");
 
         UserService userService = new UserServiceImpl();
-        // 用户总数
+
         User user = userService.getUser(userCode);
 
         req.setAttribute("user", user);
