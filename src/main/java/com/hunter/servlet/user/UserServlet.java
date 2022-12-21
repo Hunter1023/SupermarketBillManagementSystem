@@ -82,9 +82,8 @@ public class UserServlet extends HttpServlet {
         }
         User user = new User();
         UserService userService = new UserServiceImpl();
-        System.out.println("=================id: " + id);
         User userInDatabase = userService.getUser(id);
-        System.out.println("=================userInDatabase: " + userInDatabase.toString());
+
         if (isSucceed) {
             user.setId(id);
             user.setUserName(userName);
@@ -94,7 +93,6 @@ public class UserServlet extends HttpServlet {
             user.setAddress(address);
             user.setUserRole(userRole);
 
-            System.out.println("=================user: " + user.toString());
             // 如果两个user的内容不同，再写入数据库
             if (!userInDatabase.equals(user)) {
                 isSucceed = userService.updateUser(user);
