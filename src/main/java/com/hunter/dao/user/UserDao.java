@@ -77,9 +77,19 @@ public interface UserDao {
      * 根据用户编码，获取用户
      *
      * @param connection 与数据库的连接
-     * @param userCode   用户编码
+     * @param id 用户id
      * @return 用户
      * @throws SQLException SQLException
      */
-    User getUser(Connection connection, String userCode) throws SQLException;
+    User getUser(Connection connection, Integer id) throws SQLException;
+
+    /**
+     * 修改用户信息
+     *
+     * @param connection 与数据库的连接
+     * @param user 用户
+     * @return 影响的用户数
+     * @throws SQLException SQLException
+     */
+    int updateUser(Connection connection, User user) throws SQLException;
 }

@@ -47,18 +47,81 @@ public class UserServlet extends HttpServlet {
             } else if (method.equals("view")) {
                 viewUser(req, resp);
             } else if (method.equals("modify")) {
+                forwardToModifyPage(req, resp);
+            } else if (method.equals("modifyUser")) {
                 modifyUser(req, resp);
             }
         }
     }
 
-    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void modifyUser(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        boolean isSucceed = true;
+        Integer id = null;
+        String userName = null;
+        Integer gender = null;
+        Date birthday = null;
+        String phone = null;
+        String address = null;
+        Integer userRole = null;
+        try {
+            id = Integer.valueOf(req.getParameter("id"));
+            userName = req.getParameter("userName");
+
+            gender = Integer.valueOf(req.getParameter("gender"));
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            birthday = dateFormat.parse(req.getParameter("birthday"));
+
+            phone = req.getParameter("phone");
+            address = req.getParameter("address");
+
+            userRole = Integer.valueOf(req.getParameter("userRole"));
+        } catch (ParseException e) {
+            isSucceed = false;
+            e.printStackTrace();
+        }
+        User user = new User();
+        UserService userService = new UserServiceImpl();
+        System.out.println("=================id: " + id);
+        User userInDatabase = userService.getUser(id);
+        System.out.println("=================userInDatabase: " + userInDatabase.toString());
+        if (isSucceed) {
+            user.setId(id);
+            user.setUserName(userName);
+            user.setGender(gender);
+            user.setBirthday(birthday);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setUserRole(userRole);
+
+            System.out.println("=================user: " + user.toString());
+            // 如果两个user的内容不同，再写入数据库
+            if (!userInDatabase.equals(user)) {
+                isSucceed = userService.updateUser(user);
+            }
+            // 填充user的各项属性
+            user = userService.getUser(id);
+        }
+
+        if (isSucceed) {
+            req.setAttribute(Constants.MESSAGE, "修改用户成功");
+            req.setAttribute("user", user);
+        } else {
+            req.setAttribute(Constants.MESSAGE, "修改用户失败");
+            req.setAttribute("user", userInDatabase);
+        }
+
+        // 跳转到用户显示页
+        req.getRequestDispatcher("userview.jsp").forward(req, resp);
+    }
+
+    private void forwardToModifyPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 从前端获取数据
-        String userCode = req.getParameter("userCode");
+        Integer id = Integer.valueOf(req.getParameter("id"));
 
         UserService userService = new UserServiceImpl();
 
-        User user = userService.getUser(userCode);
+        User user = userService.getUser(id);
 
         req.setAttribute("user", user);
 
@@ -67,11 +130,11 @@ public class UserServlet extends HttpServlet {
 
     private void viewUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // 从前端获取数据
-        String userCode = req.getParameter("userCode");
+        Integer id = Integer.valueOf(req.getParameter("id"));
 
         UserService userService = new UserServiceImpl();
 
-        User user = userService.getUser(userCode);
+        User user = userService.getUser(id);
 
         req.setAttribute("user", user);
 

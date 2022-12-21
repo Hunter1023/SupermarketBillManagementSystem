@@ -64,11 +64,11 @@
                     <span>${user.userRoleName}</span>
                 </td>
                 <td>
-                    <span><a class="viewUser" href="javascript:;" userid=${user.id} userCode=${user.userCode}><img
+                    <span><a class="viewUser" href="javascript:;" userId=${user.id} userCode=${user.userCode}><img
                             src="${pageContext.request.contextPath }/images/read.png" alt="查看" title="查看"/></a></span>
-                    <span><a class="modifyUser" href="javascript:;" userid=${user.id} userCode=${user.userCode}><img
+                    <span><a class="modifyUser" href="javascript:;" userId=${user.id} userCode=${user.userCode}><img
                             src="${pageContext.request.contextPath }/images/xiugai.png" alt="修改" title="修改"/></a></span>
-                    <span><a class="deleteUser" href="javascript:;" userid=${user.id} username=${user.userName}><img
+                    <span><a class="deleteUser" href="javascript:;" userId=${user.id} username=${user.userName}><img
                             src="${pageContext.request.contextPath }/images/schu.png" alt="删除" title="删除"/></a></span>
                 </td>
             </tr>

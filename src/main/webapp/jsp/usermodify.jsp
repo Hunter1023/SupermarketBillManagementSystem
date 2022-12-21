@@ -8,8 +8,8 @@
     </div>
     <div class="providerAdd">
         <form id="userForm" name="userForm" method="post" action="${pageContext.request.contextPath }/jsp/user.do">
-            <input type="hidden" name="method" value="modifyexe">
-            <input type="hidden" name="uid" value="${user.id }"/>
+            <input type="hidden" name="method" value="modifyUser">
+            <input type="hidden" name="id" value="${user.id }"/>
             <div>
                 <label for="userName">用户名称：</label>
                 <input type="text" name="userName" id="userName" value="${user.userName }">

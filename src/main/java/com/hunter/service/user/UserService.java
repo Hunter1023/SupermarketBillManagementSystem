@@ -62,8 +62,16 @@ public interface UserService {
     /**
      * 通过用户编码 查询用户
      *
-     * @param userCode 用户编码
+     * @param id 用户id
      * @return 用户
      */
-    User getUser(String userCode);
+    User getUser(Integer id);
+
+    /**
+     * 更新用户
+     *
+     * @param user user
+     * @return 是否更新成功
+     */
+    boolean updateUser(User user);
 }

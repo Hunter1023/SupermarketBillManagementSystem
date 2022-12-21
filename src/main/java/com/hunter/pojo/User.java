@@ -176,4 +176,24 @@ public class User {
         int birthYear = calendar.get(Calendar.YEAR);
         return currentYear - birthYear;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        User user = (User) obj;
+        return this.userName.equals(user.getUserName()) && this.gender.equals(user.getGender())
+                && this.birthday.equals(user.getBirthday()) && this.phone.equals(user.getPhone())
+                && this.address.equals(user.getAddress()) && this.userRole.equals(user.getUserRole());
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("userName: ").append(this.userName).append("\n");
+        sb.append("gender: ").append(this.gender).append("\n");
+        sb.append("birthday: ").append(this.birthday).append("\n");
+        sb.append("phone: ").append(this.phone).append("\n");
+        sb.append("address: ").append(this.address).append("\n");
+        sb.append("userRole: ").append(this.userRole).append("\n");
+        return String.valueOf(sb);
+    }
 }

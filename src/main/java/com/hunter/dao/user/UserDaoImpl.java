@@ -96,15 +96,7 @@ public class UserDaoImpl implements UserDao {
             Object[] params = list.toArray();
             rs = BaseDao.executeQuery(connection, sql.toString(), params);
             while (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUserCode(rs.getString("userCode"));
-                user.setUserName(rs.getString("userName"));
-                user.setGender(rs.getInt("gender"));
-                user.setBirthday(rs.getDate("birthday"));
-                user.setPhone(rs.getString("phone"));
-                user.setUserRole(rs.getInt("userRole"));
-                user.setUserRoleName(rs.getString("userRoleName"));
+                user = getUser(rs);
                 userList.add(user);
             }
             BaseDao.closeResource(null, null, rs);
@@ -168,28 +160,50 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(Connection connection, String userCode) throws SQLException {
+    public User getUser(Connection connection, Integer id) throws SQLException {
         ResultSet rs = null;
         User user = null;
 
         if (connection != null) {
-            String sql = "SELECT a.*, b.roleName AS userRoleName FROM smbms_user a INNER JOIN smbms_role b ON a.userRole = b.id WHERE userCode = ?";
-            Object[] params = {userCode};
+            String sql = "SELECT a.*, b.roleName AS userRoleName FROM smbms_user a INNER JOIN smbms_role b ON a.userRole = b.id WHERE a.id = ?";
+            Object[] params = {id};
 
-            rs = BaseDao.executeQuery(connection, String.valueOf(sql), params);
+            rs = BaseDao.executeQuery(connection, sql, params);
 
             if (rs.next()) {
-                user = new User();
-                user.setUserCode(rs.getString("userCode"));
-                user.setUserName(rs.getString("userName"));
-                user.setGender(rs.getInt("gender"));
-                user.setBirthday(rs.getDate("birthday"));
-                user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("address"));
-                user.setUserRoleName(rs.getString("userRoleName"));
+                user = getUser(rs);
             }
             BaseDao.closeResource(null, null, rs);
         }
         return user;
+    }
+
+    private User getUser(ResultSet rs) throws SQLException {
+        User user;
+        user = new User();
+        user.setId(rs.getInt("id"));
+        user.setUserCode(rs.getString("userCode"));
+        user.setUserName(rs.getString("userName"));
+        user.setGender(rs.getInt("gender"));
+        user.setBirthday(rs.getDate("birthday"));
+        user.setPhone(rs.getString("phone"));
+        user.setAddress(rs.getString("address"));
+        user.setUserRole(rs.getInt("userRole"));
+        user.setUserRoleName(rs.getString("userRoleName"));
+        return user;
+    }
+
+    @Override
+    public int updateUser(Connection connection, User user) throws SQLException {
+        int affectRowsCnt = 0;
+
+        if (connection != null) {
+            String sql = "UPDATE smbms_user SET userName = ?, gender = ?, birthday = ?, phone = ?, " +
+                    "address = ?, userRole = ? where id = ?";
+            Object[] params = {user.getUserName(), user.getGender(), user.getBirthday(), user.getPhone(),
+                    user.getAddress(), user.getUserRole(), user.getId()};
+            affectRowsCnt = BaseDao.executeUpdate(connection, sql, params);
+        }
+        return affectRowsCnt;
     }
 }
