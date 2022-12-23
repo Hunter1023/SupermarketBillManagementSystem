@@ -161,4 +161,21 @@ public class UserServiceImpl implements UserService {
         }
         return isSucceed;
     }
+
+    @Override
+    public int deleteUser(Integer id) {
+        Connection connection = null;
+        int delCnt = 0;
+        try {
+            connection = BaseDao.getConnection();
+            delCnt = userDao.deleteUser(connection, id);
+        } catch (SQLException e) {
+            // 删除失败
+            delCnt = -1;
+            e.printStackTrace();
+        } finally {
+            BaseDao.closeResource(connection, null, null);
+        }
+        return delCnt;
+    }
 }

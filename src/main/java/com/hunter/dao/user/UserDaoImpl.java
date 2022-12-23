@@ -206,4 +206,16 @@ public class UserDaoImpl implements UserDao {
         }
         return affectRowsCnt;
     }
+
+    @Override
+    public int deleteUser(Connection connection, Integer id) throws SQLException {
+        int affectRowsCnt = 0;
+
+        if (connection != null) {
+            String sql = "DELETE FROM smbms_user WHERE id = ?";
+            Object[] params = {id};
+            affectRowsCnt = BaseDao.executeUpdate(connection, sql, params);
+        }
+        return affectRowsCnt;
+    }
 }

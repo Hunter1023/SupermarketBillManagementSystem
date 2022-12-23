@@ -4,8 +4,8 @@ var userObj;
 function deleteUser(obj) {
     $.ajax({
         type: "GET",
-        url: path + "/user/deluser",
-        data: {method: "deluser", uid: obj.attr("userid")},
+        url: path + "/jsp/user.do",
+        data: {method: "delUser", id: obj.attr("userId")},
         dataType: "json",
         success: function (data) {
             if (data.delResult === "true") {//删除成功：移除删除行
@@ -13,10 +13,10 @@ function deleteUser(obj) {
                 obj.parents("tr").remove();
             } else if (data.delResult === "false") {//删除失败
                 //alert("对不起，删除用户【"+obj.attr("username")+"】失败");
-                changeDLGContent("对不起，删除用户【" + obj.attr("username") + "】失败");
-            } else if (data.delResult === "notexist") {
+                changeDLGContent("对不起，删除用户【" + obj.attr("userName") + "】失败");
+            } else if (data.delResult === "notExist") {
                 //alert("对不起，用户【"+obj.attr("username")+"】不存在");
-                changeDLGContent("对不起，用户【" + obj.attr("username") + "】不存在");
+                changeDLGContent("对不起，用户【" + obj.attr("userName") + "】不存在");
             }
         },
         error: function (data) {
@@ -69,7 +69,7 @@ $(function () {
 
     $(".deleteUser").on("click", function () {
         userObj = $(this);
-        changeDLGContent("你确定要删除用户【" + userObj.attr("username") + "】吗？");
+        changeDLGContent("你确定要删除用户【" + userObj.attr("userName") + "】吗？");
         openYesOrNoDLG();
     });
 

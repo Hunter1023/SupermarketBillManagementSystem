@@ -74,7 +74,7 @@ public interface UserDao {
     long getUserId(Connection connection, String userCode) throws SQLException;
 
     /**
-     * 根据用户编码，获取用户
+     * 根据用户id，获取用户
      *
      * @param connection 与数据库的连接
      * @param id 用户id
@@ -92,4 +92,14 @@ public interface UserDao {
      * @throws SQLException SQLException
      */
     int updateUser(Connection connection, User user) throws SQLException;
+
+    /**
+     * 根据用户id删除用户
+     *
+     * @param connection connection
+     * @param id 用户id
+     * @return 删除的用户数
+     * @throws SQLException SQLException
+     */
+    int deleteUser(Connection connection, Integer id) throws SQLException;
 }

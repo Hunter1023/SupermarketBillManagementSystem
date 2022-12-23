@@ -60,7 +60,7 @@ public interface UserService {
     boolean isUserCodeExist(String userCode);
 
     /**
-     * 通过用户编码 查询用户
+     * 通过用户id 查询用户
      *
      * @param id 用户id
      * @return 用户
@@ -74,4 +74,12 @@ public interface UserService {
      * @return 是否更新成功
      */
     boolean updateUser(User user);
+
+    /**
+     * 通过用户id 删除用户
+     *
+     * @param id 用户id
+     * @return 删除用户的数量
+     */
+    int deleteUser(Integer id);
 }

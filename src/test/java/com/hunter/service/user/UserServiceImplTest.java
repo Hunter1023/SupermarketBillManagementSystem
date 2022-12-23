@@ -52,4 +52,22 @@ public class UserServiceImplTest {
         // then
         Assertions.assertEquals(8, userCnt);
     }
+
+    @Test
+    public void should_del_0_when_delete_user_by_id_999() {
+        // when
+        int delCnt = userService.deleteUser(999);
+
+        // then
+        Assertions.assertEquals(0, delCnt);
+    }
+
+    @Test
+    public void should_del_1_when_delete_user_by_exist_id() {
+        // when
+        int delCnt = userService.deleteUser(33);
+
+        // then
+        Assertions.assertEquals(1, delCnt);
+    }
 }
